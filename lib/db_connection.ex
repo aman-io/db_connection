@@ -527,8 +527,15 @@ defmodule DBConnection do
     {:ok, query, result} |
     {:error, Exception.t}
   def prepare_execute(conn, query, params, opts \\ []) do
+    Logger.info("===== query: #{inspect(query)} =====")
+    Logger.info("===== params: #{inspect(params)} =====")
+    Logger.info("===== conn: #{inspect(conn)} =====")
+    Logger.info("===== opts: #{inspect(opts)} =====")
+
     result =
       with {:ok, query, meter} <- parse(query, meter(opts), opts) do
+        Logger.info("===== conn: #{inspect(query)} =====")
+        Logger.info("===== conn: #{inspect(meter)} =====")
         parsed_prepare_execute(conn, query, params, meter, opts)
       end
 
@@ -708,6 +715,8 @@ defmodule DBConnection do
     fun.(conn)
   end
   def run(pool, fun, opts) do
+    Logger.info("===== #{opts} =====")
+
     case checkout(pool, nil, opts) do
       {:ok, conn, _} ->
         old_status = status(conn, opts)
