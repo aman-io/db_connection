@@ -534,8 +534,7 @@ defmodule DBConnection do
 
     result =
       with {:ok, query, meter} <- parse(query, meter(opts), opts) do
-        Logger.info("===== conn: #{inspect(query)} =====")
-        Logger.info("===== conn: #{inspect(meter)} =====")
+        Logger.info("===== query: #{inspect(query)} =====")
         parsed_prepare_execute(conn, query, params, meter, opts)
       end
 
@@ -1239,6 +1238,10 @@ defmodule DBConnection do
   end
 
   defp run_prepare(conn, query, meter, opts) do
+    Logger.info("===== run_prepare query #{inspect(query)} =====")
+    Logger.info("===== run_prepare query #{inspect(meter)} =====")
+    Logger.info("===== run_prepare query #{inspect(opts)} =====")
+
     with {:ok, query, meter} <- prepare(conn, query, meter, opts) do
       describe(conn, query, meter, opts)
     end
